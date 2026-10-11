@@ -192,6 +192,17 @@ function Homepage({ onNavigate }) {
         </div>
       </section>
 
+      <section className="legal-discount">
+        <p>
+          <strong>Legal Disclaimer:</strong> CaseCompass is an AI-assisted case
+          intelligence platform. All extracted events, deadlines, contradictions,
+          and missing-record alerts are flagged for human verification and must be
+          reviewed against the original source documents by a licensed attorney
+          before filing or submission. The system is not a substitute for
+          professional legal judgment.
+        </p>
+      </section>
+
       <footer className="homepage-footer">
         <p>CaseCompass · Built for litigation teams who need clarity under deadline.</p>
         <p>&copy; {new Date().getFullYear()} CaseCompass. All rights reserved.</p>
@@ -207,6 +218,13 @@ function Homepage({ onNavigate }) {
         <Navbar onNavigate={setCurrentPage} />
         {renderContent()}
       </div>
+      <footer className="app-footer">
+        <div className="app-footer__inner">
+          <span>CaseCompass © {new Date().getFullYear()} ReachLocal LLC</span>
+          <span className="app-footer__sep">·</span>
+          <span>All rights reserved. For internal legal operations use only.</span>
+        </div>
+      </footer>
     </div>
   );
 }

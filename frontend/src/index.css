@@ -307,6 +307,42 @@ h1, h2, h3, h4 {
   text-align: center;
   position: relative;
 }
+
+/* Footer & Legal Disclaimer */
+.legal-discount {
+  max-width: 900px;
+  margin: 2rem auto 0;
+  padding: 0 2.5rem;
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+.legal-discount p {
+  border-top: 1px solid var(--border-color);
+  padding-top: 1rem;
+  margin: 0;
+}
+
+.app-footer {
+  margin-top: 2.5rem;
+  border-top: 1px solid var(--border-color);
+  padding: 2rem 2.5rem;
+  color: var(--text-dim);
+  font-size: 0.82rem;
+}
+.app-footer__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.app-footer__sep {
+  opacity: 0.4;
+}
+
 .step-number {
   position: absolute;
   top: -14px;
