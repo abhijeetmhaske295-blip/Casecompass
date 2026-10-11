@@ -1,0 +1,6 @@
+{
+  "name": "CaseCompass: Legal Case Timeline & Action Organizer",
+  "description": "Production-grade Android Jetpack Compose app and architecture for legal case timeline organization, date conflict detection, gap analysis, and explicit deadline tracking.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
