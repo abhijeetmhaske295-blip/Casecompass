@@ -1,7 +1,24 @@
 import React from 'react';
 
 export default function SourceViewer({ event, onClose }) {
+
+  React.useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === 'Escape') onClose();
+    };
+    if (event) {
+      window.addEventListener('keydown', onKey);
+      document.body.style.overflow = 'hidden';
+    }
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      document.body.style.overflow = '';
+    };
+  }, [event, onClose]);
+
   if (!event) return null;
+
+  const snippet = event.source_snippet || 'No citation excerpt available for this milestone.';
 
   return (
     <div style={{
@@ -47,7 +64,7 @@ export default function SourceViewer({ event, onClose }) {
           marginBottom: '1.5rem',
           whiteSpace: 'pre-wrap'
         }}>
-          "{event.source_snippet}"
+          "{snippet}"
         </div>
 
         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
