@@ -204,7 +204,7 @@ function Homepage({ onNavigate }) {
     <div className="app-container">
       <Sidebar currentPage={currentPage} onNavigate={setCurrentPage} />
       <div className="main-content">
-        <Navbar />
+        <Navbar onNavigate={setCurrentPage} />
         {renderContent()}
       </div>
     </div>
