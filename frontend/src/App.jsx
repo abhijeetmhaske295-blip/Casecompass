@@ -22,6 +22,14 @@ import {
 export default function App() {
   const [currentPage, setCurrentPage] = useState('dashboard');
   const [loading, setLoading] = useState(true);
+  const [darkMode, setDarkMode] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('casecompass_theme');
+      if (saved) return saved === 'dark';
+      return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
+    return false;
+  });
 
   const [stats, setStats] = useState(null);
   const [documents, setDocuments] = useState([]);
@@ -29,6 +37,22 @@ export default function App() {
   const [deadlines, setDeadlines] = useState([]);
   const [conflicts, setConflicts] = useState([]);
   const [gaps, setGaps] = useState([]);
+
+  // Sync dark class with document element
+  useEffect(() => {
+    const root = document.documentElement;
+    if (darkMode) {
+      root.classList.add('dark');
+      localStorage.setItem('casecompass_theme', 'dark');
+    } else {
+      root.classList.remove('dark');
+      localStorage.setItem('casecompass_theme', 'light');
+    }
+  }, [darkMode]);
+
+  const toggleTheme = () => {
+    setDarkMode((prev) => !prev);
+  };
 
   const loadAllData = async () => {
     try {
@@ -109,20 +133,31 @@ export default function App() {
           />
         );
       case 'deadlines':
-        return <Deadlines deadlines={deadlines} />;
+        return <Deadlines deadlines={deadlines} onNavigate={setCurrentPage} />;
       case 'issues':
-        return <Issues conflicts={conflicts} gaps={gaps} />;
+        return <Issues conflicts={conflicts} gaps={gaps} onNavigate={setCurrentPage} />;
       default:
         return <NotFound onGoHome={() => setCurrentPage('dashboard')} />;
     }
   };
 
   return (
-    <div className="app-container">
-      <Sidebar currentPage={currentPage} onNavigate={setCurrentPage} />
-      <div className="main-content">
-        <Navbar />
-        {renderContent()}
+    <div className="min-h-screen bg-[#F8FAFC] dark:bg-[#0F172A] text-slate-900 dark:text-slate-100 flex font-sans transition-colors duration-200">
+      <Sidebar
+        currentPage={currentPage}
+        onNavigate={setCurrentPage}
+        counts={{
+          documents: documents.length,
+          events: events.length,
+          deadlines: deadlines.length,
+          issues: conflicts.length + gaps.length,
+        }}
+      />
+      <div className="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto">
+        <Navbar darkMode={darkMode} onToggleTheme={toggleTheme} />
+        <main className="flex-1 pb-16">
+          {renderContent()}
+        </main>
       </div>
     </div>
   );

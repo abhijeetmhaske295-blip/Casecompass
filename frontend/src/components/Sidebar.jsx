@@ -1,64 +1,121 @@
 import React from 'react';
+import {
+  Compass,
+  LayoutDashboard,
+  FileText,
+  CalendarClock,
+  ClockAlert,
+  AlertTriangle,
+  Cpu,
+  Layers,
+  ChevronRight,
+} from 'lucide-react';
 
-export default function Sidebar({ currentPage, onNavigate }) {
+export default function Sidebar({ currentPage, onNavigate, counts = {} }) {
   const navItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: '📊' },
-    { id: 'documents', label: 'Documents', icon: '📁' },
-    { id: 'timeline', label: 'Case Timeline', icon: '⏳' },
-    { id: 'deadlines', label: 'Deadlines', icon: '⏰' },
-    { id: 'issues', label: 'Conflicts & Gaps', icon: '⚠️' },
+    { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, badge: null },
+    {
+      id: 'documents',
+      label: 'Documents',
+      icon: FileText,
+      badge: counts.documents != null ? String(counts.documents) : '3',
+    },
+    {
+      id: 'timeline',
+      label: 'Case Timeline',
+      icon: CalendarClock,
+      badge: counts.events != null ? String(counts.events) : '5',
+    },
+    {
+      id: 'deadlines',
+      label: 'Deadlines',
+      icon: ClockAlert,
+      badge: counts.deadlines != null ? String(counts.deadlines) : '2',
+      badgeColor: 'bg-amber-400 text-slate-900',
+    },
+    {
+      id: 'issues',
+      label: 'Conflicts & Gaps',
+      icon: AlertTriangle,
+      badge: counts.issues != null ? String(counts.issues) : '1',
+      badgeColor: 'bg-rose-500 text-white',
+    },
   ];
 
   return (
-    <aside style={{
-      width: '260px',
-      backgroundColor: 'var(--bg-secondary)',
-      borderRight: '1px solid var(--border-color)',
-      display: 'flex',
-      flexDirection: 'column',
-      padding: '1.5rem 1rem'
-    }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.5rem 0.75rem 2rem' }}>
-        <span style={{ fontSize: '1.75rem' }}>🧭</span>
+    <aside className="w-64 bg-[#191970] text-white flex flex-col flex-shrink-0 h-screen sticky top-0 select-none shadow-xl border-r border-[#191970]/50 z-40 transition-all duration-200">
+      {/* Brand Header */}
+      <div className="h-16 flex items-center gap-3 px-6 border-b border-white/10 bg-[#121255]">
+        <div className="w-9 h-9 rounded-lg bg-white/10 flex items-center justify-center shadow-inner border border-white/15">
+          <Compass className="w-5 h-5 text-cyan-300" />
+        </div>
         <div>
-          <h2 style={{ fontSize: '1.25rem', fontWeight: 800, letterSpacing: '-0.03em', color: '#fff' }}>CaseCompass</h2>
-          <p style={{ fontSize: '0.7rem', color: 'var(--accent-cyan)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Legal Intelligence</p>
+          <h1 className="text-base font-extrabold tracking-tight text-white flex items-center gap-1.5">
+            CaseCompass
+          </h1>
+          <p className="text-[10px] font-medium tracking-wider uppercase text-cyan-300/80">
+            Litigation Intelligence
+          </p>
         </div>
       </div>
 
-      <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem', flex: 1 }}>
+      {/* Navigation Links */}
+      <nav className="flex-1 px-3 py-6 space-y-1.5 overflow-y-auto">
+        <p className="px-3 pb-2 text-[10px] font-bold uppercase tracking-wider text-white/50">
+          Core Workspaces
+        </p>
         {navItems.map((item) => {
           const isActive = currentPage === item.id;
+          const Icon = item.icon;
           return (
             <button
               key={item.id}
               onClick={() => onNavigate(item.id)}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.85rem',
-                padding: '0.75rem 1rem',
-                borderRadius: 'var(--radius-md)',
-                backgroundColor: isActive ? 'rgba(59, 130, 246, 0.15)' : 'transparent',
-                color: isActive ? 'var(--accent-blue)' : 'var(--text-muted)',
-                border: isActive ? '1px solid rgba(59, 130, 246, 0.3)' : '1px solid transparent',
-                fontWeight: isActive ? 600 : 500,
-                fontSize: '0.92rem',
-                cursor: 'pointer',
-                textAlign: 'left',
-                transition: 'all 0.15s ease'
-              }}
+              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-lg text-xs font-semibold transition-all duration-150 group ${
+                isActive
+                  ? 'bg-white text-[#191970] shadow-md font-bold'
+                  : 'text-white/80 hover:bg-white/10 hover:text-white'
+              }`}
             >
-              <span>{item.icon}</span>
-              <span>{item.label}</span>
+              <div className="flex items-center gap-3">
+                <Icon
+                  className={`w-4 h-4 transition-transform duration-150 group-hover:scale-110 ${
+                    isActive ? 'text-[#191970]' : 'text-cyan-200'
+                  }`}
+                />
+                <span>{item.label}</span>
+              </div>
+
+              {item.badge && (
+                <span
+                  className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${
+                    item.badgeColor || (isActive ? 'bg-[#191970] text-white' : 'bg-white/20 text-white')
+                  }`}
+                >
+                  {item.badge}
+                </span>
+              )}
             </button>
           );
         })}
       </nav>
 
-      <div style={{ padding: '1rem', background: 'var(--bg-card)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-        <p style={{ fontWeight: 600, color: 'var(--text-main)', marginBottom: '0.2rem' }}>AI Model: Legal-FastAPI</p>
-        <p>Vite + React ES Module</p>
+      {/* AI Processing Engine Status Box */}
+      <div className="p-4 m-3 rounded-xl bg-white/5 border border-white/10 backdrop-blur-sm">
+        <div className="flex items-center gap-2 mb-1.5 text-xs font-bold text-white">
+          <Cpu className="w-4 h-4 text-cyan-300" />
+          <span>CaseCompass Core</span>
+        </div>
+        <p className="text-[11px] text-white/70 leading-relaxed mb-3">
+          FastAPI + SQLite DB persistent extraction engine active.
+        </p>
+        <div className="flex items-center justify-between pt-2 border-t border-white/10 text-[10px] text-white/60">
+          <span>Engine v1.2</span>
+          <span className="flex items-center gap-1 text-emerald-300 font-medium">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+            Synced
+          </span>
+        </div>
       </div>
     </aside>
   );
