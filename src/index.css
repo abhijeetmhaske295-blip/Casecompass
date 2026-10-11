@@ -1,0 +1,115 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  }
+  
+  code, pre, .font-mono {
+    font-family: 'JetBrains Mono', monospace;
+  }
+}
+
+/* ============================================================== */
+/* SOFT UI / IVORY SURFACES & COBALT ACCENTS DESIGN SYSTEM       */
+/* ============================================================== */
+
+/* Light Mode Soft UI Surfaces */
+.soft-canvas-light {
+  background-color: #F7F5F0;
+}
+
+.soft-card-light {
+  background-color: #FAF8F5;
+  box-shadow: 8px 8px 20px rgba(210, 204, 193, 0.55), -8px -8px 20px rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.soft-card-light-sm {
+  background-color: #FAF8F5;
+  box-shadow: 4px 4px 12px rgba(210, 204, 193, 0.45), -4px -4px 12px rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.soft-inset-light {
+  background-color: #EFECE6;
+  box-shadow: inset 3px 3px 6px rgba(200, 194, 183, 0.45), inset -3px -3px 6px rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(200, 194, 183, 0.2);
+}
+
+.soft-btn-primary {
+  background: linear-gradient(135deg, #1C64F2 0%, #1A56DB 100%);
+  box-shadow: 4px 4px 12px rgba(26, 86, 219, 0.35), -2px -2px 6px rgba(255, 255, 255, 0.2);
+  color: #FFFFFF;
+}
+
+.soft-btn-primary:active {
+  box-shadow: inset 2px 2px 5px rgba(10, 40, 120, 0.5);
+  transform: translateY(1px);
+}
+
+.soft-btn-secondary-light {
+  background-color: #FAF8F5;
+  box-shadow: 4px 4px 10px rgba(210, 204, 193, 0.5), -4px -4px 10px rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  color: #22252A;
+}
+
+.soft-btn-secondary-light:active {
+  box-shadow: inset 2px 2px 5px rgba(210, 204, 193, 0.5);
+  transform: translateY(1px);
+}
+
+/* Dark Mode Soft UI Surfaces */
+.soft-canvas-dark {
+  background-color: #16181C;
+}
+
+.soft-card-dark {
+  background-color: #1F2228;
+  box-shadow: 8px 8px 20px rgba(12, 13, 16, 0.65), -6px -6px 16px rgba(38, 42, 50, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.soft-card-dark-sm {
+  background-color: #1F2228;
+  box-shadow: 4px 4px 10px rgba(12, 13, 16, 0.55), -3px -3px 8px rgba(38, 42, 50, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.soft-inset-dark {
+  background-color: #181A1E;
+  box-shadow: inset 3px 3px 6px rgba(10, 11, 14, 0.6), inset -2px -2px 5px rgba(38, 42, 50, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.soft-btn-secondary-dark {
+  background-color: #1F2228;
+  box-shadow: 4px 4px 10px rgba(12, 13, 16, 0.6), -3px -3px 8px rgba(38, 42, 50, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  color: #E2E8F0;
+}
+
+/* Subtle tactile animations */
+.soft-transition {
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(160, 150, 140, 0.3);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(160, 150, 140, 0.5);
+}
