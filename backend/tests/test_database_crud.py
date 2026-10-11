@@ -206,3 +206,174 @@ def test_deleting_case_cascades_related_records(db):
     assert delete_case(db, case.id) is True
     assert get_document(db, document.id) is None
     assert get_timeline_event(db, event_item.id) is None
+from datetime import date
+
+from app.crud.documents import (
+    list_documents,
+    update_document,
+    delete_document,
+)
+from app.crud.timeline_events import (
+    list_timeline_events,
+    update_timeline_event,
+    delete_timeline_event,
+)
+from app.crud.deadlines import (
+    list_deadlines,
+    update_deadline,
+    delete_deadline,
+)
+from app.crud.issues import (
+    list_issues,
+    update_issue,
+    delete_issue,
+)
+
+
+def test_document_list_update_delete(db):
+    case = create_case(db, title="Document case")
+    first = create_document(
+        db, case_id=case.id, filename="first.pdf"
+    )
+    second = create_document(
+        db, case_id=case.id, filename="second.pdf"
+    )
+
+    assert len(list_documents(db, case_id=case.id)) == 2
+
+    updated = update_document(
+        db,
+        first.id,
+        filename="updated.pdf",
+        processing_status="processed",
+    )
+    assert updated.filename == "updated.pdf"
+    assert updated.processing_status == "processed"
+
+    assert delete_document(db, second.id) is True
+    assert delete_document(db, second.id) is False
+    assert [item.id for item in list_documents(
+        db, case_id=case.id
+    )] == [first.id]
+
+
+def test_timeline_event_list_update_delete(db):
+    case = create_case(db, title="Timeline case")
+    earlier = create_timeline_event(
+        db,
+        case_id=case.id,
+        title="Earlier event",
+        normalized_date=date(2026, 1, 10),
+    )
+    later = create_timeline_event(
+        db,
+        case_id=case.id,
+        title="Later event",
+        normalized_date=date(2026, 2, 10),
+    )
+    undated = create_timeline_event(
+        db, case_id=case.id, title="Undated event"
+    )
+
+    items = list_timeline_events(db, case_id=case.id)
+    assert [item.id for item in items] == [
+        earlier.id, later.id, undated.id
+    ]
+
+    updated = update_timeline_event(
+        db, earlier.id, title="Updated event",
+        review_status="reviewed",
+    )
+    assert updated.title == "Updated event"
+    assert updated.review_status == "reviewed"
+
+    assert delete_timeline_event(db, later.id) is True
+    assert delete_timeline_event(db, later.id) is False
+
+
+def test_deadline_list_update_delete(db):
+    case = create_case(db, title="Deadline case")
+    dated = create_deadline(
+        db,
+        case_id=case.id,
+        title="Dated deadline",
+        normalized_date=date(2026, 3, 1),
+    )
+    undated = create_deadline(
+        db, case_id=case.id, title="Undated deadline"
+    )
+
+    items = list_deadlines(db, case_id=case.id)
+    assert [item.id for item in items] == [dated.id, undated.id]
+
+    updated = update_deadline(
+        db, dated.id, title="Updated deadline",
+        review_status="reviewed",
+    )
+    assert updated.title == "Updated deadline"
+    assert updated.review_status == "reviewed"
+
+    assert delete_deadline(db, undated.id) is True
+    assert delete_deadline(db, undated.id) is False
+
+
+def test_issue_list_update_delete(db):
+    case = create_case(db, title="Issue case")
+    first = create_issue(
+        db,
+        case_id=case.id,
+        issue_type="missing_document",
+        description="A document is missing.",
+    )
+    second = create_issue(
+        db,
+        case_id=case.id,
+        issue_type="date_conflict",
+        description="Two dates differ.",
+    )
+
+    assert len(list_issues(db, case_id=case.id)) == 2
+
+    updated = update_issue(
+        db, first.id, status="resolved",
+        description="Document was supplied.",
+    )
+    assert updated.status == "resolved"
+    assert updated.description == "Document was supplied."
+
+    assert delete_issue(db, second.id) is True
+    assert delete_issue(db, second.id) is False
+
+
+def test_list_operations_are_scoped_to_case(db):
+    case_one = create_case(db, title="First case")
+    case_two = create_case(db, title="Second case")
+
+    create_document(db, case_id=case_one.id, filename="one.pdf")
+    create_document(db, case_id=case_two.id, filename="two.pdf")
+
+    assert len(list_documents(db, case_id=case_one.id)) == 1
+    assert len(list_documents(db, case_id=case_two.id)) == 1
+
+    assert list_documents(db, case_id="missing-case") == []
+
+
+def test_document_list_pagination(db):
+    case = create_case(db, title="Pagination case")
+    for index in range(3):
+        create_document(
+            db,
+            case_id=case.id,
+            filename=f"document-{index}.pdf",
+        )
+
+    first_page = list_documents(
+        db, case_id=case.id, limit=2, offset=0
+    )
+    second_page = list_documents(
+        db, case_id=case.id, limit=2, offset=2
+    )
+
+    assert len(first_page) == 2
+    assert len(second_page) == 1
+    assert first_page[0].id != second_page[0].id
