@@ -1,12 +1,14 @@
 import io
 import csv
+from typing import Optional
+from sqlalchemy.orm import Session
 from services.review_service import get_all_events, get_all_deadlines, get_all_conflicts, get_all_gaps
 
-def generate_markdown_report() -> str:
-    events = sorted(get_all_events(), key=lambda x: x.date or "9999-99-99")
-    deadlines = get_all_deadlines()
-    conflicts = get_all_conflicts()
-    gaps = get_all_gaps()
+def generate_markdown_report(db: Optional[Session] = None) -> str:
+    events = sorted(get_all_events(db=db), key=lambda x: x.date or "9999-99-99")
+    deadlines = get_all_deadlines(db=db)
+    conflicts = get_all_conflicts(db=db)
+    gaps = get_all_gaps(db=db)
 
     md = []
     md.append("# CaseCompass - Executive Case Intelligence Report")
@@ -33,8 +35,8 @@ def generate_markdown_report() -> str:
 
     return "\n".join(md)
 
-def generate_csv_report() -> str:
-    events = sorted(get_all_events(), key=lambda x: x.date or "9999-99-99")
+def generate_csv_report(db: Optional[Session] = None) -> str:
+    events = sorted(get_all_events(db=db), key=lambda x: x.date or "9999-99-99")
     output = io.StringIO()
     writer = csv.writer(output)
     writer.writerow(["ID", "Date", "Raw Date", "Title", "Document", "Review Status", "Is Deadline", "Snippet"])
