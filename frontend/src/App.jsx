@@ -149,22 +149,22 @@ function Homepage({ onNavigate }) {
       </div>
 
       <section className="feature-grid">
-        <div className="feature-card">
+        <div className="feature-card" onClick={() => onNavigate('deadlines')} role="button" tabIndex={0}>
           <span className="feature-icon">&#128205;</span>
           <h2>Deadline Intelligence</h2>
           <p>Critical statutory and procedural dates tracked across every active case, with overdue and urgent alerts routed to the right owner.</p>
         </div>
-        <div className="feature-card">
+        <div className="feature-card" onClick={() => onNavigate('issues')} role="button" tabIndex={0}>
           <span className="feature-icon">&#9888;&#65039;</span>
           <h2>Contradiction Detection</h2>
           <p>Automated cross-document analysis flags conflicting testimonies, dates, and citations that require human review.</p>
         </div>
-        <div className="feature-card">
+        <div className="feature-card" onClick={() => onNavigate('documents')} role="button" tabIndex={0}>
           <span className="feature-icon">&#128222;</span>
           <h2>Missing-Record Finder</h2>
           <p>Intelligent gap analysis surfaces referenced-but-unfiled documents so no exhibit is left behind in the bundle.</p>
         </div>
-        <div className="feature-card">
+        <div className="feature-card" onClick={() => onNavigate('timeline')} role="button" tabIndex={0}>
           <span className="feature-icon">&#128247;</span>
           <h2>Source-Verified Timeline</h2>
           <p>Every milestone is tied to a document citation, letting attorneys audit the underlying evidence at a glance.</p>
