@@ -2,8 +2,7 @@
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.models import Case, Document
-
+from app.models import Case, Document, EventEvidence
 
 def create_document(
     db: Session,
@@ -74,6 +73,9 @@ def delete_document(db: Session, document_id: str) -> bool:
     if document is None:
         return False
 
+    db.query(EventEvidence).filter(
+        EventEvidence.document_id == document_id
+).delete(synchronize_session="fetch")
     db.delete(document)
     db.commit()
     return True

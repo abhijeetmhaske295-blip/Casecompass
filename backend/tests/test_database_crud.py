@@ -1,4 +1,7 @@
-
+from app.crud.event_evidence import delete_event_evidence
+from app.crud.timeline_events import delete_timeline_event
+from app.crud.documents import delete_document
+from app.crud.event_evidence import get_event_evidence
 import sys
 from pathlib import Path
 
@@ -377,3 +380,43 @@ def test_document_list_pagination(db):
     assert len(first_page) == 2
     assert len(second_page) == 1
     assert first_page[0].id != second_page[0].id
+def test_deleting_document_removes_its_evidence(db):
+    case = create_case(db, title="Document deletion case")
+    document = create_document(
+        db, case_id=case.id, filename="source.pdf"
+    )
+    event_item = create_timeline_event(
+        db, case_id=case.id, title="Hearing"
+    )
+    evidence = create_event_evidence(
+        db,
+        event_id=event_item.id,
+        document_id=document.id,
+        quote="The hearing is scheduled.",
+    )
+
+    assert evidence is not None
+    assert delete_document(db, document.id) is True
+    assert get_event_evidence(db, evidence.id) is None
+    assert get_timeline_event(db, event_item.id) is not None
+
+
+def test_deleting_event_removes_its_evidence(db):
+    case = create_case(db, title="Event deletion case")
+    document = create_document(
+        db, case_id=case.id, filename="source.pdf"
+    )
+    event_item = create_timeline_event(
+        db, case_id=case.id, title="Hearing"
+    )
+    evidence = create_event_evidence(
+        db,
+        event_id=event_item.id,
+        document_id=document.id,
+        quote="The hearing is scheduled.",
+    )
+
+    assert evidence is not None
+    assert delete_timeline_event(db, event_item.id) is True
+    assert get_event_evidence(db, evidence.id) is None
+    assert get_document(db, document.id) is not None
