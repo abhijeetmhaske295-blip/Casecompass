@@ -22,11 +22,12 @@ AI-powered legal case management and timeline intelligence platform. CaseCompass
 ### 2. Backend Setup
 ```bash
 cd backend
-python -m venv venv
-# On Windows:
-venv\Scripts\activate
-# On Linux/macOS:
+# On macOS / Linux:
+python3 -m venv venv
 source venv/bin/activate
+# On Windows:
+# python -m venv venv
+# venv\Scripts\activate
 
 pip install -r requirements.txt
 cp .env.example .env
@@ -45,7 +46,8 @@ Frontend will be available at: `http://localhost:5173`
 
 ### 4. Running with Docker Compose
 ```bash
-docker-compose up --build
+# Note: Use 'docker compose' (Docker Compose V2) or 'docker-compose'
+docker compose up --build
 ```
 
 ---
