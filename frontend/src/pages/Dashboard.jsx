@@ -18,6 +18,33 @@ export default function Dashboard({ stats, conflicts, deadlines, gaps, onNavigat
 
       <DashboardStats stats={stats} />
 
+      <section className="card" style={{ marginBottom: '1.75rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+          <h2 style={{ fontSize: '1.1rem', margin: 0 }}>Key Milestones</h2>
+          <button onClick={() => onNavigate('timeline')} className="btn btn-outline" style={{ fontSize: '0.8rem', padding: '0.3rem 0.7rem' }}>
+            View Timeline
+          </button>
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '1rem' }}>
+          <div style={{ textAlign: 'center' }}>
+            <div style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--accent-cyan)' }}>{stats ? stats.total_events : 0}</div>
+            <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Timeline Events</div>
+          </div>
+          <div style={{ textAlign: 'center' }}>
+            <div style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--accent-emerald)' }}>{stats ? stats.total_deadlines : 0}</div>
+            <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Active Deadlines</div>
+          </div>
+          <div style={{ textAlign: 'center' }}>
+            <div style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--accent-amber)' }}>{stats ? stats.total_conflicts : 0}</div>
+            <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Contradictions</div>
+          </div>
+          <div style={{ textAlign: 'center' }}>
+            <div style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--accent-purple)' }}>{stats ? stats.missing_records : 0}</div>
+            <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Missing Records</div>
+          </div>
+        </div>
+      </section>
+
       <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '1.75rem' }}>
         <div>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>

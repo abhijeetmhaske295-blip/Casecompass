@@ -35,6 +35,15 @@ export default function CaseTimeline({ events, documents, onUpdateStatus }) {
           selectedDoc={selectedDoc}
           onSelectDoc={setSelectedDoc}
         />
+        {(search || selectedDoc) && (
+          <button
+            onClick={() => { setSearch(''); setSelectedDoc(''); }}
+            className="btn btn-outline"
+            style={{ fontSize: '0.8rem', padding: '0.35rem 0.75rem' }}
+          >
+            Clear filters
+          </button>
+        )}
       </div>
 
       <Timeline

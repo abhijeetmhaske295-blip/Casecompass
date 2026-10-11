@@ -13,6 +13,9 @@ export default function Documents({ documents, onUpload, onDelete }) {
       </div>
 
       <DocumentUpload onUploadSuccess={onUpload} />
+      <p style={{ color: 'var(--text-dim)', fontSize: '0.85rem', marginTop: '1rem' }}>
+        Upload court orders, notices, witness affidavits, or motions to index them into the case timeline.
+      </p>
       <DocumentList documents={documents} onDelete={onDelete} />
     </div>
   );
